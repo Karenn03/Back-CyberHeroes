@@ -5,9 +5,9 @@ monsters_bp = Blueprint('monsters', __name__)
 
 host = 'localhost'
 port = 5432
-dbname = 'DBCyberTest'
+dbname = 'CiberHero'
 user = 'postgres'
-password = 'KM1013599968'
+password = 'nicolleMarquez07'
 
 def get_connection():
     conn = connect(host=host, port=port, dbname=dbname, user=user, password=password)
@@ -36,15 +36,28 @@ def create_monster():
     conn = get_connection()
     cur = conn.cursor(cursor_factory=extras.RealDictCursor)
 
-    cur.execute('INSERT INTO monsters (idLevel, name, description) VALUES (%s, %s, %s) RETURNING * ',
-                (idLevel, name, description))
-    
-    new_created_monster = cur.fetchone()
-    print(new_created_monster)
-    conn.commit()
-    
-    cur.close()
-    conn.close()
+    try:
+        # Insertar en Monsters
+        cur.execute('INSERT INTO monsters (idLevel, name, description) VALUES (%s, %s, %s) RETURNING idMonsters',
+                    (idLevel, name, description))
+        idMonsters = cur.fetchone()['idMonsters']
+
+        # Asociar monstruo a los juegos existentes del nivel
+        cur.execute('SELECT idGame, idUser FROM game_has_level WHERE idLevel = %s', (idLevel,))
+        games = cur.fetchall()
+        for game in games:
+            cur.execute('INSERT INTO game_has_monsters (idGame, idUser, idMonsters, idLevel) VALUES (%s, %s, %s, %s)',
+                        (game['idGame'], game['idUser'], idMonsters, idLevel))
+
+        conn.commit()
+        return jsonify({'message': 'Monster created and associations updated successfully', 'idMonsters': idMonsters})
+    except Exception as e:
+        conn.rollback()
+        return jsonify({'error': str(e)}), 400
+
+    finally:
+        cur.close()
+        conn.close()
 
     return jsonify(new_created_monster)
 

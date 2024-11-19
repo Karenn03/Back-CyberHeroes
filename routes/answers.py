@@ -3,12 +3,13 @@ from psycopg2 import connect, extras
 
 answers_bp = Blueprint('answers', __name__)
 
+
 host = 'localhost'
 port = 5432
-dbname = 'DBCyberTest'
+dbname = 'CiberHero'
 user = 'postgres'
-password = 'KM1013599968'
-
+password = 'nicolleMarquez07'
+ 
 def get_connection():
     conn = connect(host=host, port=port, dbname=dbname, user=user, password=password)
     return conn
