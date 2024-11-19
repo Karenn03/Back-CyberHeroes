@@ -1,12 +1,18 @@
 from models import userModel
-from baseRepository import BaseRepository
+from .baseRepository import BaseRepository
 
 class UserRepository(BaseRepository):
-    def find_all(self):
-        return self.db.query(userModel).all()
+    def __init__(self, db_session):
+        super().__init__(db_session, userModel)
 
     def get_by_id_card(self, id_card: int):
-        return self.db.query(userModel).filter(userModel.idCard == id_card).first()
+        try:
+            return self.db.query(userModel).filter(userModel.idCard == id_card).first()
+        except Exception as e:
+            raise Exception(f"Error retrieving user by ID card: {e}")
 
     def get_by_email(self, email: str):
-        return self.db.query(userModel).filter(userModel.email == email).first()
+        try:
+            return self.db.query(userModel).filter(userModel.email == email).first()
+        except Exception as e:
+            raise Exception(f"Error retrieving user by email: {e}")

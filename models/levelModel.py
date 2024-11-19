@@ -6,7 +6,7 @@ Base = declarative_base()
 
 class Level(Base):
     __tablename__ = "level"
-    idlevel = Column(Integer, primary_key=True, autoincrement=True)
+    idLevel = Column(Integer, primary_key=True, autoincrement=True)
     difficulty = Column(String(20), nullable=False)
 
     monsters = relationship("Monsters", back_populates="level")

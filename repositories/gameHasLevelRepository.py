@@ -1,7 +1,10 @@
 from models import gameHasLevelModel
-from baseRepository import BaseRepository
+from .baseRepository import BaseRepository
 
 class GameHasLevelRepository(BaseRepository):
+    def __init__(self, db_session):
+        super().__init__(db_session, gameHasLevelModel)
+
     def find_all(self):
         return self.db.query(gameHasLevelModel).all()
     

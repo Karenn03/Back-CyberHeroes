@@ -6,11 +6,11 @@ class LevelService:
         self.level_repository = LevelRepository(db_session)
 
     def get_all_levels(self):
-        levels = self.level_repository.find_all()
+        levels = self.level_repository.get_all()
         return [LevelDTO(level.idLevel, level.difficulty) for level in levels]
 
     def get_level_by_id(self, level_id):
-        level = self.level_repository.find_by_id(level_id)
+        level = self.level_repository.get_by_id(level_id)
         if level:
             return LevelDTO(level.idLevel, level.difficulty)
         return None

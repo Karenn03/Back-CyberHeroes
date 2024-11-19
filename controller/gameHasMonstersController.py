@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify
 from service.gameHasMonstersService import GameHasMonstersService
+from app import db
 
 gameHasMonsters_bp = Blueprint('gameHasMonsters', __name__)
 
-game_has_monsters_service = GameHasMonstersService()
+game_has_monsters_service = GameHasMonstersService(db.session)
 
 @gameHasMonsters_bp.route('/api/gameHasMonsters', methods=['GET'])
 def get_all_game_has_monsters():

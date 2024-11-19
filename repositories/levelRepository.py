@@ -1,6 +1,6 @@
 from models import levelModel
-from baseRepository import BaseRepository
+from .baseRepository import BaseRepository
 
 class LevelRepository(BaseRepository):
-    def find_all(self):
-        return self.db.query(levelModel).all()
+    def __init__(self, db_session):
+        super().__init__(db_session, levelModel)

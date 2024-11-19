@@ -1,3 +1,5 @@
+import re
+
 class UserDTO:
     def __init__(self, idUser, idCard, names, surnames, email, password, score):
         self.idUser = idUser
@@ -7,6 +9,12 @@ class UserDTO:
         self.email = email
         self.password = password
         self.score = score
+        
+        self._validate()
+
+    def _validate(self):
+        if not isinstance(self.email, str) or not re.match(r"[^@]+@[^@]+\.[^@]+", self.email):
+            raise ValueError(f"Invalid email: {self.email}")
 
     def to_dict(self):
         return {

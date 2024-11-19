@@ -1,7 +1,10 @@
 from models import gameHasMonstersModel
-from baseRepository import BaseRepository
+from .baseRepository import BaseRepository
 
 class GameHasMonstersRepository(BaseRepository):
+    def __init__(self, db_session):
+        super().__init__(db_session, gameHasMonstersModel)
+
     def find_all(self):
         return self.db.query(gameHasMonstersModel).all()
     

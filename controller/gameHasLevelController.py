@@ -1,9 +1,10 @@
 from flask import Blueprint, request, jsonify
 from service.gameHasLevelService import GameHasLevelService
+from app import db
 
 gameHasLevel_bp = Blueprint('gameHasLevel', __name__)
 
-game_has_level_service = GameHasLevelService()
+game_has_level_service = GameHasLevelService(db.session)
 
 @gameHasLevel_bp.route('/api/gameHasLevel', methods=['GET'])
 def get_all_game_has_levels():
